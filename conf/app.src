@@ -1,7 +1,7 @@
-SOURCE_URL=url of app's source
-SOURCE_SUM=sha256 checksum
+SOURCE_URL=https://nzbget.net/download/nzbget-latest-bin-linux.run
+SOURCE_SUM=97b459dcd796f03f8b558c48129a0918be76115160c4027743804e6e21b99a09
 SOURCE_SUM_PRG=sha256sum
-SOURCE_FORMAT=tar.gz
+SOURCE_FORMAT=run
 SOURCE_IN_SUBDIR=true
-SOURCE_FILENAME=
-SOURCE_EXTRACT=true
+SOURCE_FILENAME=nzbget-latext-bin-linux.run
+SOURCE_EXTRACT=false
