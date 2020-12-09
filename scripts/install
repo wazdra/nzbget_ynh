@@ -126,16 +126,6 @@ ynh_script_progression --message="Configuring system user..." --time --weight=1
 ynh_system_user_create --username=$app
 
 #=================================================
-# SETUP MEDIA FOLDER
-#=================================================
-
-# Make the app able to edit media folders (for later configuration)
-groupadd -f multimedia
-usermod -a -G multimedia $app
-# Symlink completed downloads inside the media folders, give rw acces to users.
-./yunohost.multimedia-master/script/ynh_media_addfolder.sh --source="$final_path/downloads/completed" --dest="share/Usenet"
-
-#=================================================
 # SETUP SYSTEMD
 #=================================================
 ynh_script_progression --message="Configuring a systemd service..." --time --weight=1
@@ -170,6 +160,16 @@ ynh_replace_string --match_string="ControlPort=6789" \
 ynh_store_file_checksum --file="$final_path/nzbget.conf"
 
 
+
+#=================================================
+# SETUP MEDIA FOLDER
+#=================================================
+
+# Make the app able to edit media folders (for later configuration)
+groupadd -f multimedia
+usermod -a -G multimedia $app
+# Symlink completed downloads inside the media folders, give rw acces to users.
+./yunohost.multimedia-master/script/ynh_media_addfolder.sh --source="$final_path/downloads/completed" --dest="share/Usenet"
 
 
 #=================================================
