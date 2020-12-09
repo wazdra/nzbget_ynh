@@ -142,8 +142,6 @@ ynh_script_progression --message="Generating configuration file..." --time --wei
 ### `ynh_replace_string` is used to replace a string in a file.
 ### (It's compatible with sed regular expressions syntax)
 
-ynh_replace_string --match_string="LogFile=${MainDir}/nzbget.log" \
-		   --replace_string="replace_string" --target_file="$final_path/nzbget.conf"
 ynh_replace_string --match_string="SecurePort=6791" \
 		   --replace_string="SecurePort=$port" --target_file="$final_path/nzbget.conf"
 ynh_replace_string --match_string="ControlPort=6789" \
