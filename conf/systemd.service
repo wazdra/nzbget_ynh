@@ -1,13 +1,18 @@
 [Unit]
-Description=Small description of the service
+Description=NZBGET Daemon
+Documentation=http://nzbget.net/Documentation
 After=network.target
 
 [Service]
-Type=simple
+Type=forking
 User=__APP__
 Group=__APP__
 WorkingDirectory=__FINALPATH__/
-ExecStart=__FINALPATH__/script >> /var/log/__APP__/__APP__.log 2>&1
+ExecStart=__FINALPATH__/nzbget -D
+ExecStop=__FINALPATH__/nzbget -Q
+ExecReload=__FINALPATH__/nzbget -O
+KillMode=process
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
