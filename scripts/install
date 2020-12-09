@@ -133,7 +133,7 @@ ynh_system_user_create --username=$app
 groupadd -f multimedia
 usermod -a -G multimedia $app
 # Symlink completed downloads inside the media folders, give rw acces to users.
-./yunohost.multimedia-master/script/ynh_media_addfolder.sh --source="$final_path/downloads/completed" --dest="/home/yunohost.multimedia/share/Usenet"
+./yunohost.multimedia-master/script/ynh_media_addfolder.sh --source="$final_path/downloads/completed" --dest="share/Usenet"
 
 #=================================================
 # SETUP SYSTEMD
