@@ -1,5 +1,5 @@
 [Unit]
-Description=NZBGET Daemon
+Description=NZBGet Daemon
 Documentation=http://nzbget.net/Documentation
 After=network.target
 
@@ -8,9 +8,9 @@ Type=forking
 User=__APP__
 Group=__APP__
 WorkingDirectory=__FINALPATH__/
-ExecStart=__FINALPATH__/nzbget -D
-ExecStop=__FINALPATH__/nzbget -Q
-ExecReload=__FINALPATH__/nzbget -O
+ExecStart=nzbget -D >> /var/log/__APP__/__APP__.log 2>&1
+ExecStop=__FINALPATH__/nzbget -Q >> /var/log/__APP__/__APP__.log 2>&1
+ExecReload=__FINALPATH__/nzbget -O >> /var/log/__APP__/__APP__.log 2>&1
 KillMode=process
 Restart=on-failure
 
