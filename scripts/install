@@ -167,6 +167,7 @@ ynh_script_progression --message="Managing media folders..." --time --weight=1
 groupadd -f multimedia
 usermod -a -G multimedia $app
 # Symlink completed downloads inside the media folders, give rw acces to users.
+mkdir -p $final_path/downloads/completed
 ./yunohost.multimedia-master/script/ynh_media_addfolder.sh --source="$final_path/downloads/completed" --dest="share/Usenet"
 
 
