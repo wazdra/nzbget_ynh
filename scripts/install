@@ -75,7 +75,8 @@ ynh_script_progression --message="Configuring firewall..." --time --weight=1
 # Find an available port
 port=$(ynh_find_port --port=6789)
 ynh_app_setting_set --app=$app --key=port --value=$port
-
+port2=$(ynh_find_port --port=6798)
+ynh_app_setting_set --app=$app --key=insecure_port --value=$port2
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
@@ -150,7 +151,12 @@ ynh_add_systemd_config
 ### `ynh_replace_string` is used to replace a string in a file.
 ### (It's compatible with sed regular expressions syntax)
 
-ynh_replace_string --match_string="match_string" --replace_string="replace_string" --target_file="$final_path/nzbget.conf"
+ynh_replace_string --match_string="LogFile=${MainDir}/nzbget.log" \
+		   --replace_string="replace_string" --target_file="$final_path/nzbget.conf"
+ynh_replace_string --match_string="SecurePort=6791" \
+		   --replace_string="SecurePort=$port" --target_file="$final_path/nzbget.conf"
+ynh_replace_string --match_string="ControlPort=6789" \
+		   --replace_string="ControlPort=$port2" --target_file"$final_path/nzbget.conf"
 
 #=================================================
 # STORE THE CONFIG FILE CHECKSUM
@@ -162,3 +168,12 @@ ynh_replace_string --match_string="match_string" --replace_string="replace_strin
 
 # Calculate and store the config file checksum into the app settings
 ynh_store_file_checksum --file="$final_path/nzbget.conf"
+
+
+
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_script_progression --message="Installation of $app completed" --time --last
