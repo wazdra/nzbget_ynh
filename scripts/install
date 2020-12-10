@@ -151,7 +151,7 @@ ynh_replace_string --match_string="SecureCert=" \
 		   --target_file="$final_path/nzbget.conf"
 ynh_replace_string --match_string="SecureKey=" \
 		   --replace_string="SecureKey=/etc/yunohost/certs/$domain/key.pem" \
-		   --target-file="$final_path/nzbget.conf"
+		   --target_file="$final_path/nzbget.conf"
 # Put on the right port(s). The second one will not be open to internet.
 ynh_replace_string --match_string="SecurePort=6791" \
 		   --replace_string="SecurePort=$port" --target_file="$final_path/nzbget.conf"
@@ -159,15 +159,15 @@ ynh_replace_string --match_string="ControlPort=6789" \
 		   --replace_string="ControlPort=$port2" --target_file="$final_path/nzbget.conf"
 # Disable privileged IPs
 ynh_replace_string --match_string="AuthorizedIP=127.0.0.1" \
-		   --replace_string="AuthorizedIP=" --target-file="$final_path/nzbget.conf"
+		   --replace_string="AuthorizedIP=" --target_file="$final_path/nzbget.conf"
 
 # Only allow connections from 127.0.0.1 (although this isn't necessary thanks to the firewall)
 ynh_replace_string --match_string="ControlIP=0.0.0.0" \
-		   --replace_string="ControlIP=127.0.0.1" --target-file="$final_path/nzbget.conf"
+		   --replace_string="ControlIP=127.0.0.1" --target_file="$final_path/nzbget.conf"
 
 # Make nzbget run as user "nzbget"
 ynh_replace_string --match_string="DaemonUsername=root" \
-		   --replace_string="DaemonUsername=nzbget" --target-file="$final_path/nzbget.conf"
+		   --replace_string="DaemonUsername=nzbget" --target_file="$final_path/nzbget.conf"
 
 #=================================================
 # STORE THE CONFIG FILE CHECKSUM
