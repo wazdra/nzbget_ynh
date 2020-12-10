@@ -11,6 +11,7 @@ WorkingDirectory=__FINALPATH__/
 ExecStart=/bin/sh -c "__FINALPATH__/nzbget -D >> /var/log/__APP__/__APP__.log 2>&1"
 ExecStop=/bin/sh -c "__FINALPATH__/nzbget -Q >> /var/log/__APP__/__APP__.log 2>&1"
 ExecReload=/bin/sh -c "__FINALPATH__/nzbget -O >> /var/log/__APP__/__APP__.log 2>&1"
+PIDFile=__FINALPATH__/nzbget.log
 KillMode=process
 Restart=on-failure
 
