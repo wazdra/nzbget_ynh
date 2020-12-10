@@ -142,7 +142,7 @@ ynh_script_progression --message="Generating configuration file..." --time --wei
 ### (It's compatible with sed regular expressions syntax)
 
 # Make NZBGet use multimedia folders
-ynh_replace_string --match_string="MainDir=\${AppDir}/downloads" \
+ynh_replace_string --match_string='MainDir=${AppDir}/downloads' \
 		   --replace_string="MainDir=/home/yunohost.multimedia/share/downloads" \
 		   --target_file="$final_path/nzbget.conf"
 
@@ -162,8 +162,8 @@ ynh_replace_string --match_string="DaemonUsername=root" \
 		   --replace_string="DaemonUsername=nzbget" --target_file="$final_path/nzbget.conf"
 
 # Put LockFile in a privileged location
-ynh_replace_string --match_string="LockFile=${MainDir}/nzbget.lock"\
-		   --replace_string="LockFile=${AppDir}/nzbget.lock"\
+ynh_replace_string --match_string='LockFile=\${MainDir}/nzbget.lock'\
+		   --replace_string='LockFile=\${AppDir}/nzbget.lock'\
 		   --target_file="$final_path/nzbget.conf"
 #=================================================
 # STORE THE CONFIG FILE CHECKSUM
