@@ -184,7 +184,7 @@ usermod -a -G multimedia $app
 
 chown -R root $final_path
 chown -R nzbget $final_path/nzbget
-
+chown -R /home/yunohost.multimedia/share/$app
 
 
 #=================================================
