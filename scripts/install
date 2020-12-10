@@ -75,8 +75,7 @@ ynh_script_progression --message="Configuring firewall..." --time --weight=1
 # Find an available port
 port=$(ynh_find_port --port=6789)
 ynh_app_setting_set --app=$app --key=port --value=$port
-port2=$(ynh_find_port --port=6791)
-ynh_app_setting_set --app=$app --key=insecure_port --value=$port2
+
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
@@ -142,21 +141,14 @@ ynh_script_progression --message="Generating configuration file..." --time --wei
 ### `ynh_replace_string` is used to replace a string in a file.
 ### (It's compatible with sed regular expressions syntax)
 
-# Enable HTTPS.
-ynh_replace_string --match_string="SecureControl=no" \
-		   --replace_string="SecureControl=yes" --target_file="$final_path/nzbget.conf"
-# Give access to the certificate.
-ynh_replace_string --match_string="SecureCert=" \
-		   --replace_string="SecureCert=/etc/yunohost/certs/$domain/crt.pem" \
+# Make NZBGet use multimedia folders
+ynh_replace_string --match_string="MainDir=${AppDir}/downloads" \
+		   --replace_string="MainDir=/home/yunohost.multimedia/share/downloads" \
 		   --target_file="$final_path/nzbget.conf"
-ynh_replace_string --match_string="SecureKey=" \
-		   --replace_string="SecureKey=/etc/yunohost/certs/$domain/key.pem" \
-		   --target_file="$final_path/nzbget.conf"
-# Put on the right port(s). The second one will not be open to internet.
-ynh_replace_string --match_string="SecurePort=6791" \
-		   --replace_string="SecurePort=$port" --target_file="$final_path/nzbget.conf"
+
+
 ynh_replace_string --match_string="ControlPort=6789" \
-		   --replace_string="ControlPort=$port2" --target_file="$final_path/nzbget.conf"
+		   --replace_string="ControlPort=$port" --target_file="$final_path/nzbget.conf"
 # Disable privileged IPs
 ynh_replace_string --match_string="AuthorizedIP=127.0.0.1" \
 		   --replace_string="AuthorizedIP=" --target_file="$final_path/nzbget.conf"
@@ -169,6 +161,10 @@ ynh_replace_string --match_string="ControlIP=0.0.0.0" \
 ynh_replace_string --match_string="DaemonUsername=root" \
 		   --replace_string="DaemonUsername=nzbget" --target_file="$final_path/nzbget.conf"
 
+# Put LockFile in a privileged location
+ynh_replace_string --match_string="LockFile=${MainDir}/nzbget.lock"\
+		   --replace_string="LockFile=${AppDir}/nzbget.lock"\
+		   --target_file="$final_path/nzbget.conf"
 #=================================================
 # STORE THE CONFIG FILE CHECKSUM
 #=================================================
@@ -188,9 +184,8 @@ ynh_script_progression --message="Managing media folders..." --time --weight=1
 # Make the app able to edit media folders (for later configuration)
 groupadd -f multimedia
 usermod -a -G multimedia $app
-# Symlink completed downloads inside the media folders, give rw acces to users.
-mkdir -p $final_path/downloads/completed
-./yunohost.multimedia-master/script/ynh_media_addfolder.sh --source="$final_path/downloads/completed" --dest="share/Usenet"
+
+
 
 
 #=================================================
