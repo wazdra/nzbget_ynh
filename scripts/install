@@ -143,15 +143,12 @@ ynh_script_progression --message="Generating configuration file..." --time --wei
 
 # Make NZBGet use multimedia folders
 ynh_replace_string --match_string='MainDir=${AppDir}/downloads' \
-		   --replace_string="MainDir=/home/yunohost.multimedia/share/downloads" \
+		   --replace_string="MainDir=/home/yunohost.multimedia/share/$app" \
 		   --target_file="$final_path/nzbget.conf"
 
 
 ynh_replace_string --match_string="ControlPort=6789" \
 		   --replace_string="ControlPort=$port" --target_file="$final_path/nzbget.conf"
-# Disable privileged IPs
-ynh_replace_string --match_string="AuthorizedIP=127.0.0.1" \
-		   --replace_string="AuthorizedIP=" --target_file="$final_path/nzbget.conf"
 
 # Only allow connections from 127.0.0.1 (although this isn't necessary thanks to the firewall)
 ynh_replace_string --match_string="ControlIP=0.0.0.0" \
@@ -185,6 +182,8 @@ ynh_script_progression --message="Managing media folders..." --time --weight=1
 groupadd -f multimedia
 usermod -a -G multimedia $app
 
+chown -R root $finalpath
+chown -R nzbget $finalpath/nzbget
 
 
 
