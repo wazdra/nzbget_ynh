@@ -182,8 +182,8 @@ ynh_script_progression --message="Managing media folders..." --time --weight=1
 groupadd -f multimedia
 usermod -a -G multimedia $app
 
-chown -R root $finalpath
-chown -R nzbget $finalpath/nzbget
+chown -R root $final_path
+chown -R nzbget $final_path/nzbget
 
 
 
