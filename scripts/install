@@ -135,12 +135,13 @@ ynh_script_progression --message="Generating configuration file..." --weight=2
 
 # Make NZBGet use yunohost.nzbget folder
 ynh_replace_string --match_string='MainDir=${AppDir}/downloads' \
-		   --replace_string="MainDir=/home/yunohost.nzbget"
+		   --replace_string="MainDir=/home/yunohost.nzbget"\
 		   --target_file="$final_path/nzbget.conf"
 
 
 ynh_replace_string --match_string="ControlPort=6789" \
-		   --replace_string="ControlPort=$port" --target_file="$final_path/nzbget.conf"
+		   --replace_string="ControlPort=$port"\
+		   --target_file="$final_path/nzbget.conf"
 
 # Only allow connections from 127.0.0.1 (although this isn't necessary thanks to the firewall)
 ynh_replace_string --match_string="ControlIP=0.0.0.0" \
