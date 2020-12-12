@@ -82,11 +82,6 @@ ynh_app_setting_set --app=$app --key=port --value=$port
 
 ynh_script_progression --message="Installing dependencies..." --time --weight=3
 
-# Use of multimedia folders.
-wget -nv https://github.com/maniackcrudelis/yunohost.multimedia/archive/master.zip
-unzip master.zip
-./yunohost.multimedia-master/script/ynh_media_build.sh
-
 # Debian dependencies if any.
 ynh_install_app_dependencies $pkg_dependencies
 
@@ -123,7 +118,7 @@ ynh_script_progression --message="Configuring system user..." --weight=2
 
 # Create a system user
 ynh_system_user_create --username=$app
-
+mkdir -p /home/yunohost.nzbget
 #=================================================
 # SETUP SYSTEMD
 #=================================================
@@ -141,9 +136,9 @@ ynh_script_progression --message="Generating configuration file..." --weight=2
 ### `ynh_replace_string` is used to replace a string in a file.
 ### (It's compatible with sed regular expressions syntax)
 
-# Make NZBGet use multimedia folders
+# Make NZBGet use yunohost.nzbget folder
 ynh_replace_string --match_string='MainDir=${AppDir}/downloads' \
-		   --replace_string="MainDir=/home/yunohost.multimedia/share/$app" \
+		   --replace_string="MainDir=/home/yunohost.nzbget"
 		   --target_file="$final_path/nzbget.conf"
 
 
@@ -177,18 +172,26 @@ ynh_store_file_checksum --file="$final_path/nzbget.conf"
 #=================================================
 # SETUP MEDIA FOLDER
 #=================================================
-ynh_script_progression --message="Managing media folders..." --weight=1
+ynh_script_progression --message="Managing media folders..." --weight=2
 # Make the app able to edit media folders (for later configuration)
 groupadd -f multimedia
 usermod -a -G multimedia $app
+ynh_multimedia_build_main_dir
 
+ynh_multimedia_add_folder --source_dir="/home.yunohost.nzbget" --dest_dir="share/Usenet"
 chown -R root $final_path
-chown -R nzbget $final_path/nzbget
-chown -R nzbget /home/yunohost.multimedia/share/$app
+chown -R nzbget:multimedia $final_path/nzbget
+chown -R nzbget:multimedia /home/yunohost.nzbget
+chmod -R 764 /home/yunohost.nzbget
 
+#=================================================
+# START NZBGET
+#=================================================
+ynh_script_progression --message="Starting transmission..." --weight=1
 
+ynh_systemd_action --service_name=nzbget --action=start
 #=================================================
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Installation of $app completed" --time --last
+ynh_script_progression --message="Installation of $app completed" --last
