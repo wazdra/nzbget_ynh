@@ -176,7 +176,7 @@ groupadd -f multimedia
 usermod -a -G multimedia $app
 ynh_multimedia_build_main_dir
 
-ynh_multimedia_add_folder --source_dir="/home.yunohost.nzbget" --dest_dir="share/Usenet"
+ynh_multimedia_addfolder --source_dir="/home.yunohost.nzbget" --dest_dir="share/Usenet"
 chown -R root $final_path
 chown -R nzbget:multimedia $final_path/nzbget
 chown -R nzbget:multimedia /home/yunohost.nzbget
